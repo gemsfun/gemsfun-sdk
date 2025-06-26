@@ -13,9 +13,7 @@ Simple SDK for interacting with Solmeme Program on Solana. Supports creating, bu
 ## 📦 Installation
 
 ```bash
-npm install ../sdk-pump
-# or from published package
-npm install @solmemes.lol/gemsfun-sdk
+npm install @gems.fun/sdk
 ```
 
 ## 🚀 Basic Usage
@@ -24,7 +22,7 @@ npm install @solmemes.lol/gemsfun-sdk
 
 ```typescript
 import { useWallet } from '@solana/wallet-adapter-react';
-import { PumpClient } from '@solmemes.lol/gemsfun-sdk';
+import { PumpClient } from '@gems.fun/sdk';
 
 // In React component
 const wallet = useWallet();
@@ -189,7 +187,7 @@ import {
   findMarketCapPDA, 
   findBondingCurvePDA,
   findCreatorRevenuePDA
-} from '@solmemes.lol/gemsfun-sdk';
+} from '@gems.fun/sdk';
 
 // Find PDA addresses
 const [global] = findGlobalPDA();
@@ -221,7 +219,7 @@ import { useState, useMemo } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { PublicKey } from '@solana/web3.js';
 import { BN } from 'bn.js';
-import { PumpClient } from '@solmemes.lol/gemsfun-sdk';
+import { PumpClient } from '@gems.fun/sdk';
 
 export function useGemsfunActions() {
   const wallet = useWallet();

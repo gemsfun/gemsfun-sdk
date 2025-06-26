@@ -1,5 +1,5 @@
 {
-  "name": "@solmemes.lol/gemsfun-sdk",
+  "name": "@gems.fun/sdk",
   "version": "1.0.0",
   "license": "MIT",
   "description": "TypeScript SDK for interacting with Gemsfun program (create, buy, sell normal coins)",
