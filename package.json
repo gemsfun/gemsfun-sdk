@@ -1,0 +1,55 @@
+{
+  "name": "@solmemes.lol/gemsfun-sdk",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "TypeScript SDK for interacting with Gemsfun program (create, buy, sell normal coins)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/solmeme-program.git",
+    "directory": "sdk-pump"
+  },
+  "homepage": "https://github.com/your-username/solmeme-program/tree/main/sdk-pump",
+  "bugs": {
+    "url": "https://github.com/your-username/solmeme-program/issues"
+  },
+  "keywords": ["solana", "pump", "solmeme", "sdk", "typescript", "anchor"],
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.30.1",
+    "@solana/buffer-layout": "^4.0.1",
+    "@solana/buffer-layout-utils": "^0.2.0",
+    "@solana/spl-token": "^0.4.9",
+    "@solana/web3.js": "^1.98.0",
+    "bn.js": "^5.2.1",
+    "js-sha3": "^0.9.3"
+  },
+  "devDependencies": {
+    "@types/bn.js": "^5.1.5",
+    "@types/mocha": "^9.0.0",
+    "chai": "^4.3.4",
+    "mocha": "^9.0.3",
+    "tiny-invariant": "^1.3.3",
+    "ts-mocha": "^10.0.0",
+    "typescript": "^5.7.3"
+  },
+  "resolutions": {
+    "@solana/web3.js": "^1.93.4"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "bigint-buffer",
+      "bufferutil",
+      "utf-8-validate"
+    ]
+  }
+}
