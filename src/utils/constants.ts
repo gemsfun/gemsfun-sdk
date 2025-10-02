@@ -1,5 +1,6 @@
 import { PublicKey } from "@solana/web3.js";
 
+// Program ID from deployed program (must match IDL)
 export const PUMP_PROGRAM_ID = new PublicKey("FQCKTpkAviLqpUPEvbJ5epQLLPgVW5URSUw4CH7BXQTb");
 
 // Seeds

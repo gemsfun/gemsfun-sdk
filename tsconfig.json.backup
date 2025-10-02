@@ -1,33 +1,24 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "ESNext",
+    "target": "es6",
+    "module": "commonjs",
     "allowJs": false,
     "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
     "lib": [
       "DOM",
-      "ES2020",
+      "ES6",
       "DOM.Iterable",
       "ScriptHost",
       "ES2016.Array.Include"
     ],
     "outDir": "./dist",
-    "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "moduleResolution": "node",
-    "isolatedModules": true,
-    "noEmitOnError": true,
-    "removeComments": false,
-    "preserveConstEnums": true
+    "moduleResolution": "node"
   },
   "include": [
     "src/**/*"
@@ -35,8 +26,6 @@
   "exclude": [
     "dist/**/*",
     "node_modules",
-    "tests/**/*",
-    "**/*.test.ts",
-    "**/*.spec.ts"
+    "tests"
   ]
 }

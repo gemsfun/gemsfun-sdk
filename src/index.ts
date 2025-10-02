@@ -5,6 +5,7 @@ export { PumpClient } from "./clients/gemsfun";
 export type {
   CreateCoinParams,
   BuyCoinParams,
+  BuyCoinWithSolParams,
   SellCoinParams,
   PumpClientConfig
 } from "./types/accounts";
@@ -16,7 +17,9 @@ export {
   findMarketCapPDA,
   findBondingCurvePDA,
   findCreatorRevenuePDA,
-  findEventAuthorityPDA
+  findEventAuthorityPDA,
+  calculateTokensForSol,
+  calculateSolForTokens
 } from "./utils";
 
 // Artifacts
