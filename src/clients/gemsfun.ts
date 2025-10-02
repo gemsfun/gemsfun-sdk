@@ -154,7 +154,6 @@ export class PumpClient {
     }
   }
 
-  // Method để tạo coin mới
   async createCoin(params: CreateCoinParams): Promise<CreateCoinResult> {
     // Validate parameters
     this.validateCreateCoinParams(params);
@@ -164,14 +163,12 @@ export class PumpClient {
     const [marketCap] = findMarketCapPDA(params.marketCapIndex);
     const [bondingCurve] = findBondingCurvePDA(mint.publicKey);
     
-    // Tìm associated bonding curve token account
     const associatedBondingCurve = await getAssociatedTokenAddress(
       mint.publicKey,
       bondingCurve,
       true
     );
 
-    // Tạo metadata PDA sử dụng Metaplex UMI
     const umi = createUmi(this.connection.rpcEndpoint);
     const [metadataString] = findMetadataPda(umi, { 
       mint: publicKey(mint.publicKey.toBase58()) 
@@ -179,7 +176,6 @@ export class PumpClient {
     const metadata = new PublicKey(metadataString);
 
     try {
-      // Tạo instruction với tất cả accounts cần thiết
       const createInstruction = await this.program.methods
         .create(
           params.marketCapIndex,
@@ -225,7 +221,6 @@ export class PumpClient {
         instructions.push(createRevenuePoolInstruction);
       }
 
-      // Tạo VersionedTransaction
       const { blockhash } = await this.connection.getLatestBlockhash();
       
       const messageV0 = new TransactionMessage({
@@ -236,7 +231,6 @@ export class PumpClient {
       
       const versionedTx = new VersionedTransaction(messageV0);
       
-      // Sign với mint keypair
       if (params.mint) {
         versionedTx.sign([params.mint]);
       } else {
@@ -253,9 +247,7 @@ export class PumpClient {
     }
   }
 
-  // Method để mua coin với token amount cụ thể
   async buyCoin(params: BuyCoinParams): Promise<VersionedTransaction> {
-    // Validate parameters
     this.validateBuyCoinParams(params);
 
     const [global] = findGlobalPDA();
@@ -264,10 +256,8 @@ export class PumpClient {
     const [creatorRevenuePool] = findCreatorRevenuePDA(params.mint, params.creator);
     
     try {
-      // Fetch on-chain data
       const globalData = await this.program.account.global.fetch(global);
       
-      // Tìm các token accounts
       const associatedBondingCurve = await getAssociatedTokenAddress(
         params.mint,
         bondingCurve,
@@ -281,7 +271,6 @@ export class PumpClient {
 
       const instructions = [];
 
-      // Tạo ATA cho user nếu chưa có
       try {
         await getAccount(this.connection, associatedUser);
       } catch (error) {
@@ -295,7 +284,6 @@ export class PumpClient {
         );
       }
 
-      // Kiểm tra và tạo creator_revenue_pool nếu chưa có
       try {
         await this.program.account.creatorRevenuePool.fetch(creatorRevenuePool);
       } catch (error) {
@@ -312,11 +300,10 @@ export class PumpClient {
         instructions.push(createRevenuePoolInstruction);
       }
 
-      // Thêm buy instruction với token amount từ user
       const buyInstruction = await this.program.methods
         .buy(
           params.marketCapIndex,
-          params.tokenAmount, // Use user's specified token amount
+          params.tokenAmount,
           params.maxSolCost,
           params.referralFee || 0
         )
@@ -343,7 +330,6 @@ export class PumpClient {
 
       instructions.push(buyInstruction);
 
-      // Tạo và return VersionedTransaction
       const { blockhash } = await this.connection.getLatestBlockhash();
       
       const messageV0 = new TransactionMessage({
@@ -359,7 +345,6 @@ export class PumpClient {
     }
   }
 
-  // Method để mua coin với SOL amount (helper method)
   async buyCoinWithSol(params: BuyCoinWithSolParams): Promise<VersionedTransaction> {
     // Validate parameters
     this.validateBuyCoinWithSolParams(params);
@@ -369,12 +354,10 @@ export class PumpClient {
     const [bondingCurve] = findBondingCurvePDA(params.mint);
     
     try {
-      // Fetch on-chain data để calculate token amount
       const globalData = await this.program.account.global.fetch(global);
       const marketCapData = await this.program.account.marketCap.fetch(marketCap);
       const bondingCurveData = await this.program.account.bondingCurve.fetch(bondingCurve);
       
-      // Calculate token amount from SOL input
       const { tokenAmount } = calculateTokensForSol(
         params.solAmount,
         {
@@ -390,11 +373,9 @@ export class PumpClient {
         globalData.fee
       );
 
-      // Calculate slippage tolerance for max sol cost
       const slippage = params.slippage || 500; // Default 5%
       const maxSolCost = params.solAmount.mul(new BN(10000 + slippage)).div(new BN(10000));
       
-      // Convert to BuyCoinParams and call buyCoin
       const buyParams: BuyCoinParams = {
         mint: params.mint,
         marketCapIndex: params.marketCapIndex,
@@ -412,9 +393,7 @@ export class PumpClient {
     }
   }
 
-  // Method để bán coin
   async sellCoin(params: SellCoinParams): Promise<VersionedTransaction> {
-    // Validate parameters
     this.validateSellCoinParams(params);
 
     const [global] = findGlobalPDA();
@@ -423,11 +402,9 @@ export class PumpClient {
     const [creatorRevenuePool] = findCreatorRevenuePDA(params.mint, params.creator);
     
     try {
-      // Fetch on-chain data
       const globalData = await this.program.account.global.fetch(global);
       const bondingCurveData = await this.program.account.bondingCurve.fetch(bondingCurve);
       
-      // Calculate expected SOL output for token input
       const { solAfterFee } = calculateSolForTokens(
         params.tokenAmount,
         {
@@ -438,11 +415,9 @@ export class PumpClient {
         globalData.fee
       );
 
-      // Calculate slippage tolerance  
       const slippage = params.slippage || 500; // Default 5%
       const minSolOutput = solAfterFee.mul(new BN(10000 - slippage)).div(new BN(10000));
       
-      // Tìm các token accounts
       const associatedBondingCurve = await getAssociatedTokenAddress(
         params.mint,
         bondingCurve,
@@ -454,7 +429,6 @@ export class PumpClient {
         this.wallet.publicKey
       );
 
-      // Tạo sell instruction với slippage protection
       const sellInstruction = await this.program.methods
         .sell(
           params.marketCapIndex,
@@ -483,7 +457,6 @@ export class PumpClient {
         })
         .instruction();
 
-      // Tạo và return VersionedTransaction
       const { blockhash } = await this.connection.getLatestBlockhash();
       
       const messageV0 = new TransactionMessage({
@@ -499,7 +472,6 @@ export class PumpClient {
     }
   }
 
-  // Helper methods
   async getGlobalAccount() {
     const [global] = findGlobalPDA();
     return await this.program.account.global.fetch(global);
@@ -526,7 +498,6 @@ export class PumpClient {
    */
   async getTokenInfo(mint: PublicKey) {
     const bondingCurve = await this.getBondingCurveAccount(mint);
-    // Get marketCap from the bondingCurve.marketCap pubkey
     const marketCapData = await this.program.account.marketCap.fetch(bondingCurve.marketCap);
     
     return {

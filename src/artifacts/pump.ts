@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/pump.json`.
  */
 export type Pump = {
-  "address": "FQCKTpkAviLqpUPEvbJ5epQLLPgVW5URSUw4CH7BXQTb",
+  "address": "BbB1tcCWeuXTMdqfMs93qjUEGhmax3WvWxLyEPYwAAZP",
   "metadata": {
     "name": "pump",
     "version": "0.1.0",
@@ -2093,6 +2093,15 @@ export type Pump = {
         {
           "name": "raydiumMigrator",
           "type": "pubkey"
+        },
+        {
+          "name": "presetHash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
         }
       ]
     },
@@ -3959,73 +3968,83 @@ export type Pump = {
     },
     {
       "code": 6056,
+      "name": "invalidPresetHash",
+      "msg": "Provided preset hash does not match the expected value."
+    },
+    {
+      "code": 6057,
       "name": "invalidTokenDecimals",
       "msg": "Invalid token decimals."
     },
     {
-      "code": 6057,
+      "code": 6058,
       "name": "invalidTokenSupply",
       "msg": "Invalid token supply."
     },
     {
-      "code": 6058,
+      "code": 6059,
       "name": "invalidLiquidity",
       "msg": "Invalid liquidity amount."
     },
     {
-      "code": 6059,
+      "code": 6060,
       "name": "invalidPdaStructure",
       "msg": "Invalid PDA structure or data."
     },
     {
-      "code": 6060,
+      "code": 6061,
       "name": "zeroLengthParticipantData",
       "msg": "Participant data has zero length which is invalid."
     },
     {
-      "code": 6061,
+      "code": 6062,
       "name": "unauthorized",
       "msg": "User is not authorized to perform this action."
     },
     {
-      "code": 6062,
+      "code": 6063,
       "name": "tokenReservesMismatch",
       "msg": "Token reserves mismatch after calculation."
     },
     {
-      "code": 6063,
+      "code": 6064,
       "name": "solReservesMismatch",
       "msg": "SOL reserves mismatch after calculation."
     },
     {
-      "code": 6064,
+      "code": 6065,
       "name": "invalidAmountOut",
       "msg": "Invalid calculation for token amount out."
     },
     {
-      "code": 6065,
+      "code": 6066,
       "name": "invalidAmountIn",
       "msg": "Invalid calculation for SOL amount in."
     },
     {
-      "code": 6066,
+      "code": 6067,
       "name": "referralSameAsFeeRecipient",
       "msg": "Referral account is the same as fee recipient."
     },
     {
-      "code": 6067,
+      "code": 6068,
       "name": "maxSupplyReached",
       "msg": "Maximum token supply reached."
     },
     {
-      "code": 6068,
+      "code": 6069,
       "name": "insufficientRevenue",
       "msg": "Insufficient Revenue to claim"
     },
     {
-      "code": 6069,
+      "code": 6070,
       "name": "invalidCreatorRevenuePoolPda",
       "msg": "Invalid Creator Revenue Pool PDA"
+    },
+    {
+      "code": 6071,
+      "name": "insufficientSolForTransaction",
+      "msg": "Insufficient SOL provided for transaction. Amount provided must cover both token cost and lottery deposit."
     }
   ],
   "types": [
@@ -4105,6 +4124,10 @@ export type Pump = {
           {
             "name": "isActive",
             "type": "bool"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
           }
         ]
       }
@@ -4408,6 +4431,10 @@ export type Pump = {
         "fields": [
           {
             "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
             "type": "pubkey"
           },
           {

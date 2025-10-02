@@ -1,5 +1,5 @@
 {
-  "address": "FQCKTpkAviLqpUPEvbJ5epQLLPgVW5URSUw4CH7BXQTb",
+  "address": "BbB1tcCWeuXTMdqfMs93qjUEGhmax3WvWxLyEPYwAAZP",
   "metadata": {
     "name": "pump",
     "version": "0.1.0",
@@ -2087,6 +2087,15 @@
         {
           "name": "raydium_migrator",
           "type": "pubkey"
+        },
+        {
+          "name": "preset_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
         }
       ]
     },
@@ -3953,73 +3962,83 @@
     },
     {
       "code": 6056,
+      "name": "InvalidPresetHash",
+      "msg": "Provided preset hash does not match the expected value."
+    },
+    {
+      "code": 6057,
       "name": "InvalidTokenDecimals",
       "msg": "Invalid token decimals."
     },
     {
-      "code": 6057,
+      "code": 6058,
       "name": "InvalidTokenSupply",
       "msg": "Invalid token supply."
     },
     {
-      "code": 6058,
+      "code": 6059,
       "name": "InvalidLiquidity",
       "msg": "Invalid liquidity amount."
     },
     {
-      "code": 6059,
+      "code": 6060,
       "name": "InvalidPDAStructure",
       "msg": "Invalid PDA structure or data."
     },
     {
-      "code": 6060,
+      "code": 6061,
       "name": "ZeroLengthParticipantData",
       "msg": "Participant data has zero length which is invalid."
     },
     {
-      "code": 6061,
+      "code": 6062,
       "name": "Unauthorized",
       "msg": "User is not authorized to perform this action."
     },
     {
-      "code": 6062,
+      "code": 6063,
       "name": "TokenReservesMismatch",
       "msg": "Token reserves mismatch after calculation."
     },
     {
-      "code": 6063,
+      "code": 6064,
       "name": "SolReservesMismatch",
       "msg": "SOL reserves mismatch after calculation."
     },
     {
-      "code": 6064,
+      "code": 6065,
       "name": "InvalidAmountOut",
       "msg": "Invalid calculation for token amount out."
     },
     {
-      "code": 6065,
+      "code": 6066,
       "name": "InvalidAmountIn",
       "msg": "Invalid calculation for SOL amount in."
     },
     {
-      "code": 6066,
+      "code": 6067,
       "name": "ReferralSameAsFeeRecipient",
       "msg": "Referral account is the same as fee recipient."
     },
     {
-      "code": 6067,
+      "code": 6068,
       "name": "MaxSupplyReached",
       "msg": "Maximum token supply reached."
     },
     {
-      "code": 6068,
+      "code": 6069,
       "name": "InsufficientRevenue",
       "msg": "Insufficient Revenue to claim"
     },
     {
-      "code": 6069,
+      "code": 6070,
       "name": "InvalidCreatorRevenuePoolPDA",
       "msg": "Invalid Creator Revenue Pool PDA"
+    },
+    {
+      "code": 6071,
+      "name": "InsufficientSolForTransaction",
+      "msg": "Insufficient SOL provided for transaction. Amount provided must cover both token cost and lottery deposit."
     }
   ],
   "types": [
@@ -4099,6 +4118,10 @@
           {
             "name": "is_active",
             "type": "bool"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
           }
         ]
       }
@@ -4402,6 +4425,10 @@
         "fields": [
           {
             "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
             "type": "pubkey"
           },
           {
